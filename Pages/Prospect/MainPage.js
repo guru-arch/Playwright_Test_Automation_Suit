@@ -14,6 +14,7 @@ getLogo(){
 async EnterProspectID(prospectID){
     await this.page.locator(this.search).fill(prospectID)
     await this.page.keyboard.press('Enter')
+
 }
 
 
