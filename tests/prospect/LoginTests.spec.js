@@ -65,9 +65,9 @@ let op;
 test("open_prospect",async()=>{
 mainpage = new MainPage(page)
 //enter prospect ID
-await mainpage.EnterProspectID('PR-356843')
-await page.waitForSelector('//iframe[@title="PR-356843"]', { state: 'visible' });
-frame = await page.frameLocator('//iframe[@title="PR-356843"]')
+await mainpage.EnterProspectID('PR-357846')
+await page.waitForSelector('//iframe[@title="PR-357846"]', { state: 'visible' });
+frame = await page.frameLocator('//iframe[@title="PR-357846"]')
 over = new OverviewPage(frame)
 await page.waitForLoadState('networkidle');
 await expect(over.overvieW()).toBeVisible()
@@ -77,8 +77,8 @@ await over.overviewClick()
 
 test('validateScreenFlowtree',async()=>{
 //getting frame     
-await page.waitForSelector('//iframe[@title="PR-356843"]', { state: 'visible' });
-const frame1 = await page.frameLocator('//iframe[@title="PR-356843"]')
+await page.waitForSelector('//iframe[@title="PR-357846"]', { state: 'visible' });
+const frame1 = await page.frameLocator('//iframe[@title="PR-357846"]')
 op= new OverviewPage(frame1)
 await op.waitForScreenFlow()
 let options = op.getScreenFlow()
@@ -105,6 +105,18 @@ for(let i =0;i<count;i++){
     }
     
 }
+})
+
+test('Validate_WithoutCoverage_ErrorMessage',async()=>{
+await page.waitForSelector('//iframe[@title="PR-357846"]', { state: 'visible' });
+const frame1 = await page.frameLocator('//iframe[@title="PR-357846"]')
+const cover = new OverviewPage(frame1)
+await cover.clickSubmitButton()
+await page.waitForSelector('//iframe[@title="PR-357846"]', { state: 'visible' });
+const frame2 = await page.frameLocator('//iframe[@title="PR-357846"]')
+const cover2 = new OverviewPage(frame2)
+await cover2.wait_El(cover2.errorWithoutCoverage)
+await expect(cover.get_withoutCoverage_Error()).toContainText("Error: Please enter at-least one coverage.")
 })
 
 test('validateOverviewComments',async()=>{

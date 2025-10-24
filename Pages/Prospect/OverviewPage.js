@@ -17,7 +17,8 @@ constructor(frame){
     this.SelCoverage4 ='//Select[@name="$PpyWorkPage$pQuote$pOrganization$pSubMemberList$l1$pCoveragesList$l4$pLineOfCoverage"]'
     this.coverageList ='//Select[@name="$PpyWorkPage$pQuote$pOrganization$pSubMemberList$l1$pCoveragesList$l1$pLineOfCoverage"]/option'
     this.wcCoverage = '//Select[@name="$PpyWorkPage$pQuote$pOrganization$pSubMemberList$l1$pCoveragesList$l1$pLineOfCoverage"]/option'
-
+    this.submitButton ='(//button[text()="Submit"])[2]'
+    this.errorWithoutCoverage = '//table[@class="error-table"]'
 
 
 
@@ -90,4 +91,23 @@ async fillCoverage(){
     await this.frame.locator(this.addCoverage).click()
     await this.frame.locator(this.SelCoverage4).selectOption({label:"Auto Liability"})
 }
+//function to click on submit
+
+async clickSubmitButton(){
+    await this.frame.locator(this.submitButton).click()
+}
+
+//function to wait for element
+async wait_El(locator){
+await this.frame.locator(locator).waitFor({state:'visible'})
+}
+
+//function to get ErrorMessage 
+get_withoutCoverage_Error(){
+
+    return this.frame.locator(this.errorWithoutCoverage)
+    
+
+}
+
 }
