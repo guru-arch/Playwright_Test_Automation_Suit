@@ -2,12 +2,13 @@ import {test,expect,chromium} from '@playwright/test'
 import {LoginPage} from '../../Pages/Prospect/LoginPage.js'
 import{MainPage} from '../../Pages/Prospect/MainPage.js'
 import{OverviewPage} from '../../Pages/Prospect/OverviewPage.js'
+import{FrameManager} from '../../Pages/Prospect/FrameManager.js'
 
 let browser;
 let context;
 let page;
 let logIn;
-let frame;
+
 
 test.beforeAll("startup",async()=>{
 browser = await chromium.launch({headless:false})
@@ -42,7 +43,7 @@ expect(await logIn.getErrorMessage()).toBe(logIn.message)
 })
 
 
-test("validusernameandPass_4",async()=>{
+test("validusernameandPass_3",async()=>{
 //logIn = new LoginPage(page)    
 //await logIn.open()    
 await logIn.EnterUsername("samrat_qa")
@@ -58,28 +59,32 @@ await expect(log.getLogo()).toBeVisible()
 
 //Tests on Overview Page
 test.describe("overview Tests",()=>{
-let mainpage ;
+let mainpage2 ;
 let over;
 let op;
+let cover2;
 
-test("open_prospect",async()=>{
-mainpage = new MainPage(page)
+test("open_prospect_1",async()=>{
+let mainpage2 = new MainPage(page)
 //enter prospect ID
-await mainpage.EnterProspectID('PR-357846')
-await page.waitForSelector('//iframe[@title="PR-357846"]', { state: 'visible' });
-frame = await page.frameLocator('//iframe[@title="PR-357846"]')
-over = new OverviewPage(frame)
+await mainpage2.EnterProspectID('PR-357846')
+//await page.waitForSelector('//iframe[@title="PR-357846"]', { state: 'visible' });
+//let frame1 = await page.frameLocator('//iframe[@title="PR-357846"]')
+const frame2 = new FrameManager(page)
+over = new OverviewPage(await frame2.getFrame())
 await page.waitForLoadState('networkidle');
 await expect(over.overvieW()).toBeVisible()
 await over.overviewClick()
 })
 
 
-test('validateScreenFlowtree',async()=>{
+test('validateScreenFlowtree_2',async()=>{
 //getting frame     
-await page.waitForSelector('//iframe[@title="PR-357846"]', { state: 'visible' });
-const frame1 = await page.frameLocator('//iframe[@title="PR-357846"]')
-op= new OverviewPage(frame1)
+
+//await page.waitForSelector('//iframe[@title="PR-357846"]', { state: 'visible' });
+//let frame1 = await page.frameLocator('//iframe[@title="PR-357846"]')
+const frame1 = new FrameManager(page)
+op= new OverviewPage(await frame1.getFrame())
 await op.waitForScreenFlow()
 let options = op.getScreenFlow()
 let count = await options.count()
@@ -107,37 +112,41 @@ for(let i =0;i<count;i++){
 }
 })
 
-test('Validate_WithoutCoverage_ErrorMessage',async()=>{
-await page.waitForSelector('//iframe[@title="PR-357846"]', { state: 'visible' });
-const frame1 = await page.frameLocator('//iframe[@title="PR-357846"]')
-const cover = new OverviewPage(frame1)
+test('Validate_WithoutCoverage_ErrorMessage_3',async()=>{
+//mainpage.getFrame()
+//await page.waitForSelector('//iframe[@title="PR-357846"]', { state: 'visible' });
+//let frame1 = await page.frameLocator('//iframe[@title="PR-357846"]')
+const frame3 = new FrameManager(page)
+const cover = new OverviewPage(await frame3.getFrame())
 await cover.clickSubmitButton()
-await page.waitForSelector('//iframe[@title="PR-357846"]', { state: 'visible' });
-const frame2 = await page.frameLocator('//iframe[@title="PR-357846"]')
-const cover2 = new OverviewPage(frame2)
+//mainpage.getFrame()
+//await page.waitForSelector('//iframe[@title="PR-357846"]', { state: 'visible' });
+//let frame2 = await page.frameLocator('//iframe[@title="PR-357846"]')
+const frame4 = new FrameManager(page)
+cover2 = new OverviewPage(await frame4.getFrame())
 await cover2.wait_El(cover2.errorWithoutCoverage)
 await expect(cover.get_withoutCoverage_Error()).toContainText("Error: Please enter at-least one coverage.")
 })
 
-test('validateOverviewComments',async()=>{
+test('validateOverviewComments_4',async()=>{
  await expect(op.getOverview()).toBeVisible()
  expect(await op.getOverviewBox().isEnabled()).toBe(true)
 })
 
 
-test('validateServiceInstructions',async()=>{
+test('validateServiceInstructions_5',async()=>{
     await expect(op.getService()).toBeVisible()
     expect(await op.getServiceBox().isEnabled()).toBe(true)
 })
 
 
-test('validateCollectioncomments',async()=>{
+test('validateCollectioncomments_6',async()=>{
 await expect(op.getCollection()).toBeVisible()
 expect(await op.getCollectinBox().isEnabled()).toBe(true)
 })
 
 
-test('validateCoverageList',async()=>{
+test('validateCoverageList_7',async()=>{
 const Loc = await op.getCoverageList()
 const count = await Loc.count()
 expect.soft(count).toBe(5)
@@ -160,11 +169,31 @@ expect (await Loc.nth(i).textContent()).toBe("Auto Liability")
 }
 
 }
-//select wc coverage
+
+//adding WC,GL,AL,APD
 await op.fillCoverage()
-// this is
+
 
 })
+
+test('validateSaveAndSubButton_8',async()=>{
+await expect(cover2.get_saveAndExit_button()).toBeVisible()
+await expect(cover2.get_saveAndExit_button()).toBeEnabled()
+await expect(cover2.getSubmitButton()).toBeVisible()
+await expect(cover2.getSubmitButton()).toBeEnabled()
+await cover2.clickSubmitButton()
+})
+
+
+
+})
+
+//-------------------------- Tests On Member Data Entry Screen ---------------------
+
+test.describe("MDE_TESTS",async()=>{
+
+
+
 
 
 

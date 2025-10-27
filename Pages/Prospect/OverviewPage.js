@@ -19,7 +19,7 @@ constructor(frame){
     this.wcCoverage = '//Select[@name="$PpyWorkPage$pQuote$pOrganization$pSubMemberList$l1$pCoveragesList$l1$pLineOfCoverage"]/option'
     this.submitButton ='(//button[text()="Submit"])[2]'
     this.errorWithoutCoverage = '//table[@class="error-table"]'
-
+    this.saveAndExit = '//button[text()="Save And Exit"]'
 
 
 }
@@ -97,6 +97,12 @@ async clickSubmitButton(){
     await this.frame.locator(this.submitButton).click()
 }
 
+//function to get submit button
+getSubmitButton(){
+    return this.frame.locator(this.submitButton)
+}
+
+
 //function to wait for element
 async wait_El(locator){
 await this.frame.locator(locator).waitFor({state:'visible'})
@@ -104,10 +110,14 @@ await this.frame.locator(locator).waitFor({state:'visible'})
 
 //function to get ErrorMessage 
 get_withoutCoverage_Error(){
-
-    return this.frame.locator(this.errorWithoutCoverage)
+ return this.frame.locator(this.errorWithoutCoverage)
     
+}
 
+//function to get Save and exit button
+
+get_saveAndExit_button(){
+    return this.frame.locator(this.saveAndExit)
 }
 
 }
