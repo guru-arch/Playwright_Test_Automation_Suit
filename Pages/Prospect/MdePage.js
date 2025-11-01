@@ -20,6 +20,43 @@ export class MdePage{
     this.audExpoError ='//span[text()="Audit Exposure cannot be blank."]'
     this.audBaseError ='//span[text()="Audit Exposure Base cannot be blank."]'
     this.audDesError ='//span[text()="Audit Exposure Description cannot be blank."]'
+    this.wcActExpo = '//input[@name="$PpyWorkPage$pQuote$pOrganization$pSubMemberList$l1$pCoveragesList$l1$pExposureGroup$gActuarial$pExposure"]'
+    this.wcaudExpo ='//input[@name="$PpyWorkPage$pQuote$pOrganization$pSubMemberList$l1$pCoveragesList$l1$pExposureGroup$gAudit$pExposure"]'
+    this.wcTracExpo ='//input[@name="$PpyWorkPage$pQuote$pOrganization$pSubMemberList$l1$pCoveragesList$l1$pExposureGroup$gTracked$pExposure"]'
+    this.wcBaseSelOP ='//select[@name="$PpyWorkPage$pQuote$pOrganization$pSubMemberList$l1$pCoveragesList$l1$pExposureGroup$gActuarial$pExposureBaseDD"]/option'
+    this.wcBaseSelect='//select[@name="$PpyWorkPage$pQuote$pOrganization$pSubMemberList$l1$pCoveragesList$l1$pExposureGroup$gActuarial$pExposureBaseDD"]'
+    this.wcExpoDescriOP='//select[@name="$PpyWorkPage$pQuote$pOrganization$pSubMemberList$l1$pCoveragesList$l1$pExposureGroup$gActuarial$pExposureDescriptionDD"]/option'
+    this.WcExpoDescriSel ='//select[@name="$PpyWorkPage$pQuote$pOrganization$pSubMemberList$l1$pCoveragesList$l1$pExposureGroup$gActuarial$pExposureDescriptionDD"]'
+   
+
+
+
+ }
+ async selecting_WcExpoDescriSel(descriptionOPti){
+  await this.frame.locator(this.WcExpoDescriSel).selectOption({label:descriptionOPti})
+ }
+
+ get_wcExpoDescri(){
+   return this.frame.locator(this.wcExpoDescriOP)
+ }
+   
+
+ async SelectingWcBase(Base){
+ await this.frame.locator(this.wcBaseSelect).selectOption({label:`${Base}`})
+ }
+ get_wcBaseSel(){
+   return this.frame.locator(this.wcBaseSelOP)
+ }
+ async Enetr_WcExpoValue(exposureVal){
+   await this.frame.locator(this.wcActExpo).fill(exposureVal)
+ }
+ async getInput_wcaudExpo(){
+ return await this.frame.locator(this.wcaudExpo).inputValue()
+  
+ }
+ async getInput_wcTracExpo(){
+   return  await this.frame.locator(this.wcTracExpo).inputValue()
+   
  }
  get_audDesError(){
    return this.frame.locator(this.audDesError)

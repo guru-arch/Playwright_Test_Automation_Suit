@@ -286,6 +286,65 @@ let audDescError = mdeScreen4.get_audDesError()
 expect(await audDescError.count()).toBe(4)
 })
 
+test('Validate_WC_Exposure_MDE_5',async()=>{
+let mde4 = new FrameManager(page)
+let mdeScreen4 = new MdePage(await mde.getFrame())
+//Should enter exposure value by seperating ','
+const Exposure = "178,654.98"
+await mdeScreen4.Enetr_WcExpoValue(Exposure)
+await page.keyboard.press('Tab')
+//temporary timeout
+await page.waitForTimeout(4000)
+expect(await mdeScreen4.getInput_wcaudExpo()).toBe(Exposure)
+expect(await mdeScreen4.getInput_wcTracExpo()).toBe(Exposure)
+})
+
+test('Validate_WC_ExposureBase_MDE_6',async()=>{
+let mde5 = new FrameManager(page)
+let mdeScreen5 = new MdePage(await mde5.getFrame())
+let BaseSelOptions = mdeScreen5.get_wcBaseSel()
+const count = await BaseSelOptions.count()
+for(let i=0;i<count;i++){
+   if(i===0){
+      expect(await BaseSelOptions.nth(i).textContent()).toBe('Select...')
+   }if(i===1){
+      expect(await BaseSelOptions.nth(i).textContent()).toBe('1')
+   }if(i===2){
+      expect(await BaseSelOptions.nth(i).textContent()).toBe('10')
+   }if(i===3){
+      expect(await BaseSelOptions.nth(i).textContent()).toBe('100')
+   }if(i===4){
+      expect(await BaseSelOptions.nth(i).textContent()).toBe('1000')
+   }
+}
+
+//Selecting Base 10
+//waiting for options
+await page.waitForTimeout(5000)
+await mdeScreen5.SelectingWcBase(10)
+})
+
+test('Validate_WC_ExposureDescri_MDE_7',async()=>{
+let mde6 = new FrameManager(page)
+let mdeScreen6 = new MdePage(await mde6.getFrame())
+let DescrptionOPt = mdeScreen6.get_wcExpoDescri()
+const count =await DescrptionOPt.count()
+for(let i=0;i<count;i++){
+   if(i===0){
+      expect(await DescrptionOPt.nth(i).textContent()).toBe('Select...')
+   }if(i===1){
+      expect(await DescrptionOPt.nth(i).textContent()).toBe('Full Payroll Excluding Monopolistic')
+   }if(i===2){
+      expect(await DescrptionOPt.nth(i).textContent()).toBe('Other Exposure Accrued')
+   }if(i===3){
+      expect(await DescrptionOPt.nth(i).textContent()).toBe('Other Fixed Assets')
+   }
+}
+//selecting Description full payroll excluding monopolistic
+await mdeScreen6.selecting_WcExpoDescriSel("Full Payroll Excluding Monopolistic")
+
+})
+
 
 
 
